@@ -37,45 +37,45 @@ public class HomeController {
 
         model.addAttribute("title", "MyJobs");
 
-        List jobs = (List<Job>) jobRepository.findAll();
-        model.addAttribute("job", jobs );
+        List<Job> jobs = (List<Job>) jobRepository.findAll();
+        model.addAttribute("jobs", jobs );
 
         return "index";
     }
 
-    @GetMapping("add")
+    @GetMapping("add")//request mapping to add
     public String displayAddJobForm(Model model) {
 	    model.addAttribute("title", "Add Job");
-        model.addAttribute(new Job());
-        model.addAttribute("employers", employerRepository.findAll());
+        model.addAttribute(new Job());//add new instance of job
+        model.addAttribute("employers", employerRepository.findAll()); //adds all employers to the model
 
 
-        List skills = (List<Skill>) skillRepository.findAll();
-        model.addAttribute("skills", skills);
+        List<Skill> skills = (List<Skill>) skillRepository.findAll();//retrieves skills list from database
+        model.addAttribute("skills", skills);//allows user to select multiple skills
 
         return "add";
     }
 
     @PostMapping("add")
-    public String processAddJobForm(@ModelAttribute @Valid Job newJob,
+    public String processAddJobForm(@ModelAttribute @Valid Job newJob, //indicating newJob should be retrieved from the model
                                        Errors errors, Model model, @RequestParam int employerId, @RequestParam List<Integer> skills) {
-
+//errors holds any validation errors, model allows us to pass data to the view, @RequestParam allows us to retrieve data, and list is list of skill ids
         if (errors.hasErrors()) {
 	        model.addAttribute("title", "Add Job");
             model.addAttribute(new Job());
             model.addAttribute("employers", employerRepository.findAll());
             return "add";
         }
-        Optional<Employer> result = employerRepository.findById(employerId);
+        Optional<Employer> result = employerRepository.findById(employerId); //retrieves the employer from the database
         if (result.isPresent()) {
             Employer employer = result.get(); //retrieves the employer object from the optional container
             newJob.setEmployer(employer); //sets employer for the new job
 
         }
-        List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
-        newJob.setSkills(skillObjs);
+        List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);//retrieves the list of skills from the database
+        newJob.setSkills(skillObjs);//sets skills for the new job
 
-        jobRepository.save(newJob);
+        jobRepository.save(newJob);//saves the new job to the database
 
         return "redirect:";
     }

@@ -6,9 +6,9 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-public class Job extends AbstractEntity {
+public class Job extends AbstractEntity { //extends AbstractEntity
 
-    @ManyToOne
+    @ManyToOne //changed to establish manytoone relationship with Employer
     private Employer employer;
 
     @ManyToMany

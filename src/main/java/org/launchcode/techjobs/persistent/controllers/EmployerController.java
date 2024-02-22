@@ -15,43 +15,43 @@ import java.util.Optional;
 @RequestMapping("employers")
 public class EmployerController {
 
-    @Autowired
-    private EmployerRepository employerRepository;
+    @Autowired //injects employer repository
+    private EmployerRepository employerRepository; //created employer repository field
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Model model) { //creates index method to display all employers
         model.addAttribute("title", "All Employers");
         model.addAttribute("employers", employerRepository.findAll());
-        return "employers/index";
+        return "employers/index"; //returns index.html
     }
 
     @GetMapping("add")
     public String displayAddEmployerForm(Model model) {
         model.addAttribute(new Employer());
-        return "employers/add";
+        return "employers/add";//returns add.html
     }
 
-    @PostMapping("add")
+    @PostMapping("add") //maps post request to add
     public String processAddEmployerForm(@ModelAttribute @Valid Employer newEmployer,
                                     Errors errors, Model model) {
 
-        if (errors.hasErrors()) {
+        if (errors.hasErrors()) { //checks if errors exist
             return "employers/add";
         }
-        employerRepository.save(newEmployer);
-        return "redirect:";
+        employerRepository.save(newEmployer); //saves new employer to database
+        return "redirect:";//redirects to index
     }
 
-    @GetMapping("view/{employerId}")
+    @GetMapping("view/{employerId}") //maps get request to view
     public String displayViewEmployer(Model model, @PathVariable int employerId) {
-
-        Optional optEmployer = employerRepository.findById(employerId);
+    //creates displayViewEmployer method passing data to view and int employerId to extract the ID from the URL
+        Optional<Employer> optEmployer = employerRepository.findById(employerId);//retrieves employer & checks if it exists
         if (optEmployer.isPresent()) {
-            Employer employer = (Employer) optEmployer.get();
-            model.addAttribute("employer", employer);
-            return "employers/view";
+            Employer employer = (Employer) optEmployer.get();//if exists, gets the employer
+            model.addAttribute("employer", employer); //adds the employer to the model
+            return "employers/view";//returns view
         } else {
-            return "redirect:../";
+            return "redirect:../";//redirects to index
         }
 
     }

@@ -1,7 +1,6 @@
 --Part 1
 
-SELECT id, employer, name, skills
-FROM Job;
+--id: int, employer: varchar, name: string, varchar: varchar
 
 --Part 2
 

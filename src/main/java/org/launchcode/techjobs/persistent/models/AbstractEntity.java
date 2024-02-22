@@ -10,14 +10,14 @@ import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
 
-@MappedSuperclass
+@MappedSuperclass //indicates that it can be used as a parent class for entity classes.
 public abstract class AbstractEntity {
 
     @Id
     @GeneratedValue
     private int id;
 
-    @NotBlank(message="Name is required")
+    @NotBlank(message="Name is required") //added annotation so field can't be left blank
     @Size(min = 3, max = 70, message = "Name must be between 3 and 70 characters")
     private String name;
 
@@ -39,7 +39,7 @@ public abstract class AbstractEntity {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o) { //equals method to check if two objects are equal
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AbstractEntity that = (AbstractEntity) o;

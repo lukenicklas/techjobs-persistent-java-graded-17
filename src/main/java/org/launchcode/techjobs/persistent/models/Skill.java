@@ -15,11 +15,13 @@ public class Skill extends AbstractEntity {
     @Size(min = 3, max = 300, message = "Description must be between 3 and 300 characters")
     private String description;
 
-    @ManyToMany(mappedBy = "skills")
-    private final List<Job> jobs = new ArrayList<>();
+
+    //adding a jobs field
+    @ManyToMany(mappedBy = "skills") //foreign key name in database
+    private final List<Job> jobs = new ArrayList<>(); //initializes list of jobs
 
 
-    public Skill() {
+    public Skill() { //no arg constructor
     }
 
     public String getDescription() {
