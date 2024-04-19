@@ -75,15 +75,25 @@ public class HomeController {
         List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);//retrieves the list of skills from the database
         newJob.setSkills(skillObjs);//sets skills for the new job
 
-        jobRepository.save(newJob);//saves the new job to the database
+        jobRepository.save(newJob);//saves the new job to the data
 
         return "redirect:";
     }
 
     @GetMapping("view/{jobId}")
     public String displayViewJob(Model model, @PathVariable int jobId) {
+        Optional<Job> optJob = jobRepository.findById(jobId);
+        {
+            if (optJob.isPresent()) {
+                Job job = (Job) optJob.get();
+                model.addAttribute("job", job);
+                return "view";
+            } else {
+                return "redirect:../";
+            }
 
-            return "view";
+        }
     }
+
 
 }
